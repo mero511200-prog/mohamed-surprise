@@ -1,265 +1,591 @@
- 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ملف سري</title>
+<title>THE GUEVARA FILE | Mohamed Amer</title>
+
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;min-height:100vh;display:grid;place-items:center;
- padding:20px;
- background:radial-gradient(ellipse at center,#351014 0%,#130709 48%,#050505 100%);
- color:#f7e9df;font-family:Tahoma,Arial,sans-serif;text-align:center;
- overflow-x:hidden
+:root {
+  --red: #b52636;
+  --dark: #080607;
+  --text: #f8eeee;
+  --muted: #cbb5b8;
+  --line: #55232b;
 }
-body:before{
- content:"";position:fixed;inset:0;pointer-events:none;
- background:linear-gradient(115deg,transparent 35%,#a51f2b18 50%,transparent 65%);
- animation:glow 6s infinite alternate
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--dark);
+  color: var(--text);
+  font-family: Tahoma, Arial, sans-serif;
+  line-height: 1.9;
+  overflow-x: hidden;
 }
-.card{
- position:relative;width:min(100%,460px);padding:30px 24px;
- border:1px solid #8e343c;background:#0c0809ef;
- box-shadow:0 0 55px #9d16262b;animation:appear .8s ease both
+body:before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at top, #42131a, #13090c 48%, #050405 85%);
 }
-.line{width:65px;height:2px;background:#c44b53;margin:0 auto 25px}
-.small{color:#c68b8b;letter-spacing:3px;font-size:11px}
-h1{font-size:clamp(25px,7vw,36px);line-height:1.8;margin:20px 0 8px}
-h2{font-size:22px;line-height:1.9}
-p{color:#d4bebe;line-height:2}
-input,button{
- width:100%;padding:14px;margin-top:12px;font-size:15px;
- font-family:inherit;text-align:center
+button, input { font: inherit; }
+button {
+  cursor: pointer;
+  border: 1px solid #a83341;
+  background: linear-gradient(120deg, #70131e, #b52636);
+  color: white;
+  padding: 13px 22px;
+  transition: .25s;
 }
-input{background:#171011;border:1px solid #704047;color:white;outline:none}
-input:focus{border-color:#d05a65;box-shadow:0 0 15px #a51f2b55}
-button{
- background:linear-gradient(100deg,#7f1825,#b32b38);
- border:0;color:white;cursor:pointer;transition:.25s
+button:hover { filter: brightness(1.2); transform: translateY(-2px); }
+button:disabled { opacity: .55; cursor: default; }
+input {
+  width: 100%;
+  padding: 14px;
+  background: #100b0c;
+  border: 1px solid #71313a;
+  color: white;
 }
-button:hover{filter:brightness(1.2);transform:translateY(-2px)}
-button:disabled{opacity:.5;cursor:default}
-.hidden{display:none!important}
-#error{color:#ff777e;min-height:20px}
-#result,#eyeResult{min-height:45px}
-@keyframes appear{
- from{opacity:0;transform:translateY(20px)}
- to{opacity:1;transform:translateY(0)}
+.hidden { display: none !important; }
+.container { width: min(1180px, 92%); margin: auto; }
+.topbar {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  background: #090708;
 }
-@keyframes glow{
- from{transform:translateX(-15%)}
- to{transform:translateX(15%)}
+.topbar .container {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
 }
-.letter{
- display:inline-block;opacity:0;
- animation:rise .5s forwards;
- animation-delay:var(--delay)
+.brand { color: #e98791; font-size: 12px; letter-spacing: 3px; }
+.status { color: #bca0a3; font-size: 11px; }
+.hero {
+  min-height: 82vh;
+  display: flex;
+  align-items: center;
+  padding: 70px 0;
+  position: relative;
+  overflow: hidden;
 }
-@keyframes rise{
- from{opacity:0;transform:translateY(22px)}
- to{opacity:1;transform:translateY(0)}
+.eyebrow { color: #e37b86; font-size: 12px; letter-spacing: 3px; }
+.hero h1 {
+  font-size: clamp(42px, 8vw, 94px);
+  line-height: 1.25;
+  margin: 20px 0;
 }
-.photo-wrap{
- position:relative;width:min(100%,330px);margin:20px auto;
- border:1px solid #8e343c;line-height:0
+.hero h1 span { color: #d94b5a; }
+.hero p { max-width: 720px; color: var(--muted); font-size: 18px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.outline { background: transparent; }
+.small { color: #bda2a5; font-size: 12px; }
+.section { padding: 80px 0; border-top: 1px solid #ffffff0c; }
+.section-heading { margin-bottom: 32px; }
+.section-heading h2 { font-size: clamp(29px, 5vw, 48px); margin: 8px 0; }
+.section-heading p { color: var(--muted); max-width: 760px; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.panel {
+  padding: 25px;
+  border: 1px solid var(--line);
+  background: linear-gradient(140deg, #1a0d10, #0c0809);
 }
-.photo-wrap img{display:block;width:100%;height:auto;min-height:180px;object-fit:cover}
-.eye-hit{
- position:absolute;width:20%;height:12%;padding:0;margin:0;
- border:2px solid transparent;background:transparent;
- border-radius:50%;transform:translate(-50%,-50%);
+.panel h3 { margin: 10px 0; }
+.panel p { color: var(--muted); margin-bottom: 0; }
+.number { color: #e37b86; font-size: 12px; letter-spacing: 2px; }
+.timeline { border-right: 1px solid #80313b; padding-right: 25px; margin-right: 8px; }
+.event { position: relative; padding-bottom: 25px; }
+.event:before {
+  content: "";
+  position: absolute;
+  right: -31px;
+  top: 12px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d94b5a;
 }
-.eye-hit:hover{border-color:#d05a65;background:#a51f2b33}
-.eye-left{left:38%;top:34%}
-.eye-right{left:62%;top:34%}
-.final-message p{margin:12px 0}
+.year { color: #e37b86; font-size: 12px; }
+.event h3 { margin: 5px 0; }
+.event p { margin: 0; color: var(--muted); }
+.quote {
+  padding: 24px;
+  border-right: 3px solid var(--red);
+  background: #190e10;
+}
+.video-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid #71303a;
+  background: #120a0c;
+}
+.video-frame iframe { width: 100%; height: 100%; border: 0; }
+.video-caption { font-size: 12px; color: var(--muted); }
+.quiz-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 20px;
+}
+.quiz-side, .quiz-main {
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: #100a0c;
+}
+.progress-track { height: 5px; background: #362025; margin: 14px 0; }
+.progress-bar { height: 100%; width: 0; background: #d94b5a; transition: .3s; }
+.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.answers button { width: 100%; }
+#result, #eyeResult { min-height: 35px; color: #efa0a8; }
+.photo-frame {
+  width: min(520px, 100%);
+  margin: 25px auto;
+  position: relative;
+  border: 1px solid #82313b;
+  background: #120a0c;
+}
+.photo-frame img { display: block; width: 100%; min-height: 240px; object-fit: cover; }
+.eye-hit {
+  position: absolute;
+  width: 18%;
+  height: 12%;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.eye-hit:hover { background: #b5263633; border-color: #efa0a8; }
+.eye-left { left: 38%; top: 34%; }
+.eye-right { left: 62%; top: 34%; }
+#finalMessage {
+  max-width: 850px;
+  margin: 30px auto;
+  padding: 30px 20px;
+  border: 1px solid var(--line);
+  background: #110a0c;
+}
+#finalMessage p { color: #e1c8cb; font-size: 17px; }
+.letter {
+  display: inline-block;
+  opacity: 0;
+  animation: rise .5s forwards;
+  animation-delay: var(--delay);
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+footer {
+  text-align: center;
+  padding: 25px 0;
+  border-top: 1px solid var(--line);
+  color: #a5888b;
+  font-size: 11px;
+}
+
+/* دوامة الانتقال للأغنية */
+#songPortal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 28px 16px;
+  background: radial-gradient(circle, #351018, #080607 70%);
+  color: white;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+#songPortal.active { display: flex; animation: fadeIn 1s ease forwards; }
+.portal-ring {
+  width: min(60vw, 300px);
+  aspect-ratio: 1;
+  padding: 8px;
+  border-radius: 50%;
+  background: conic-gradient(#b52636, #16090c, #f05b70, #090708, #b52636);
+  box-shadow: 0 0 55px #b5263677;
+  animation: spinPortal 2s linear infinite;
+}
+.portal-picture { width: 100%; height: 100%; overflow: hidden; border-radius: 50%; }
+.portal-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: zoomPortal 3s ease-in forwards;
+}
+#songPortal h2 { margin: 20px 0 0; font-size: clamp(24px, 4vw, 40px); }
+#songPortal .portal-note { color: #d8b5ba; }
+#songPlayer { width: min(700px, 95%); margin-top: 22px; }
+#songPlayer iframe { width: 100%; aspect-ratio: 16 / 9; border: 1px solid #87313c; }
+#songStatus { font-size: 13px; color: #e0bdc1; }
+@keyframes spinPortal { to { transform: rotate(360deg); } }
+@keyframes zoomPortal { from { transform: scale(1); } to { transform: scale(2.5); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 760px) {
+  .grid { grid-template-columns: 1fr; }
+  .quiz-layout { grid-template-columns: 1fr; }
+  .section { padding: 55px 0; }
+  .topbar .container { flex-direction: column; }
+  .hero { min-height: 70vh; }
+}
+@media (max-width: 400px) {
+  .answers { grid-template-columns: 1fr; }
+  .hero-actions button { width: 100%; }
+}
 </style>
 </head>
+
 <body>
 
-<main class="card" id="entry">
- <div class="line"></div>
- <div class="small">A PRIVATE FILE</div>
- <h1>إنت فاكر إني نسيتك؟</h1>
- <p>طب اكتب الباسورد.</p>
- <input id="password" type="password" placeholder="اكتب الباسورد هنا" autocomplete="off">
- <button onclick="enter()">فتح الملف</button>
- <div id="error"></div>
- <div class="small">CLASSIFIED · 001</div>
-</main>
-
-<main class="card hidden" id="welcome">
- <div class="line"></div>
- <div class="small">ACCESS GRANTED</div>
- <h1>كنت مستنياك يا محمد</h1>
- <p>دي مش نهاية الحكاية... دي البداية !!!</p>
- <button id="startBtn" onclick="startQuiz()">ابدأ التحقيق</button>
-
- <section id="quiz" class="hidden">
-  <div class="line"></div>
-  <div class="small">CONFIDENTIAL INVESTIGATION</div>
-  <p id="progress"></p>
-  <h2 id="question"></h2>
-  <button id="answerTrue" onclick="answer(true)">صح</button>
-  <button id="answerFalse" onclick="answer(false)">غلط</button>
-  <p id="result"></p>
-  <button id="nextBtn" class="hidden" onclick="nextQuestion()">التالي !!!</button>
- </section>
-
- <section id="ending" class="hidden">
-  <div class="line"></div>
-  <div class="small">FINAL FILE</div>
-  <h1>وصلنا لآخر الملف يا حمودي !!!</h1>
-  <p>بس لسه فيه اختبار أخير !!!</p>
-  <p>دوس على العين الشمال في صورة جيفو !!!</p>
-
-  <div class="photo-wrap">
-   <img id="chePhoto"
-    src="https://upload.wikimedia.org/wikipedia/commons/5/58/CheHigh.jpg"
-    alt="صورة تشي جيفارا"
-    onerror="this.alt='الصورة لم تتحمل تأكد من اتصال الإنترنت';this.style.minHeight='180px'">
-   <button class="eye-hit eye-left" aria-label="العين الشمال" onclick="leftEye()"></button>
-   <button class="eye-hit eye-right" aria-label="العين اليمين" onclick="rightEye()"></button>
+<header class="topbar">
+  <div class="container">
+    <div class="brand">M.A. ARCHIVES / 001</div>
+    <div class="status">CLASSIFIED FILE — ACCESS RESTRICTED</div>
   </div>
+</header>
 
-  <p id="eyeResult"></p>
+<!-- شاشة الباسورد -->
+<main id="entry">
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow">A PRIVATE FILE FOR ONE PERSON</div>
+      <h1>إنت فاكر إني<br><span>نسيتك؟</span></h1>
+      <p>في ملفات بتتفتح بكلمة سر، وفي حكايات مينفعش تتقفل غير لما تعرف آخرها !!!</p>
 
-  <section id="final" class="hidden final-message">
-   <div class="line"></div>
-   <h2 id="animatedTitle"></h2>
-   <p>أتمنى يكون عجبك وانبسطت بيه</p>
-   <p>وأنا آسفة على ردي لما سألتني عملتيه ولا لأ يا نور عيني</p>
-   <p>أنا موجودة علشانك تمام !!!</p>
-   <p>إنت وبس</p>
-   <p>أنا بحبك أوي يا حمودي</p>
-   <p>غالبا دي أول مرة أعمل سايت لحد بس عموما أنا كنت عملت جزء منه وبعدين كملت</p>
-   <p>أتمنى إنه يعجبك يا روح قلبي</p>
-   <h2>ENJOY YA HAMOODY !!!</h2>
+      <div style="max-width:440px;margin-top:28px">
+        <label class="small" for="password">ENTER THE PASSWORD</label>
+        <input id="password" type="password" placeholder="اكتب الباسورد هنا" autocomplete="off">
+        <button style="width:100%;margin-top:12px" onclick="enter()">فتح الملف السري</button>
+        <p id="error" class="small"></p>
+      </div>
+      <div class="small" style="margin-top:30px;letter-spacing:2px">PERSONAL ARCHIVE · MOHAMED AMER</div>
+    </div>
   </section>
- </section>
 </main>
+
+<!-- الموقع الأساسي -->
+<main id="site" class="hidden">
+
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow">ACCESS GRANTED / SUBJECT: MOHAMED</div>
+      <h1>كنت مستنياك<br><span>يا محمد</span></h1>
+      <p>أهلا بيك في الملف يا حمودي !!! قدامك تحقيق صغير عن شخصية تاريخية، بس متفتكرش إنك هتخلص وتمشي بسهولة !!!</p>
+      <div class="hero-actions">
+        <button onclick="goTo('story')">افتح الملف</button>
+        <button class="outline" onclick="goTo('documentary')">شوف الفيديو</button>
+      </div>
+      <div class="small" style="margin-top:35px;letter-spacing:2px">SCROLL TO INVESTIGATE</div>
+    </div>
+  </section>
+
+  <section class="section" id="story">
+    <div class="container">
+      <div class="section-heading">
+        <div class="eyebrow">CASE BACKGROUND / 01</div>
+        <h2>مين هو تشي جيفارا؟</h2>
+        <p>إرنستو تشي جيفارا كان طبيبًا أرجنتينيًا وثوريًا، اشتهر بدوره في الثورة الكوبية وبأفكاره السياسية المثيرة للجدل.</p>
+      </div>
+      <div class="grid">
+        <article class="panel">
+          <div class="number">FILE 01</div>
+          <h3>البداية</h3>
+          <p>اتولد في روساريو بالأرجنتين يوم 14 يونيو 1928.</p>
+        </article>
+        <article class="panel">
+          <div class="number">FILE 02</div>
+          <h3>طالب طب</h3>
+          <p>درس الطب في جامعة بوينس آيرس قبل ما يتفرغ للنشاط الثوري.</p>
+        </article>
+        <article class="panel">
+          <div class="number">FILE 03</div>
+          <h3>رحلة غيّرت أفكاره</h3>
+          <p>رحلاته في أمريكا اللاتينية خلّته يشوف الفقر والتفاوت الاجتماعي عن قرب.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <div class="eyebrow">CHRONOLOGY / 02</div>
+        <h2>خط زمني للقضية</h2>
+        <p>ركّز في الأحداث يا حمودي، لأن الأسئلة اللي جاية محتاجة تركيز !!!</p>
+      </div>
+      <div class="timeline">
+        <div class="event">
+          <div class="year">1928</div>
+          <h3>الميلاد في الأرجنتين</h3>
+          <p>بدأت حياته في روساريو، بعيد عن كوبا اللي ارتبط اسمه بثورتها بعد كده.</p>
+        </div>
+        <div class="event">
+          <div class="year">1948</div>
+          <h3>دراسة الطب</h3>
+          <p>بدأ دراسة الطب في بوينس آيرس.</p>
+        </div>
+        <div class="event">
+          <div class="year">1955</div>
+          <h3>لقاء في المكسيك</h3>
+          <p>قابل فيديل كاسترو وانضم للحركة اللي شاركت في الثورة الكوبية.</p>
+        </div>
+        <div class="event">
+          <div class="year">1959</div>
+          <h3>بعد الثورة الكوبية</h3>
+          <p>تولى أدوارًا سياسية واقتصادية في كوبا بعد انتصار الثورة.</p>
+        </div>
+        <div class="event">
+          <div class="year">1967</div>
+          <h3>نهاية حياته في بوليفيا</h3>
+          <p>أُلقي القبض عليه في بوليفيا وقُتل في أكتوبر 1967.</p>
+        </div>
+      </div>
+      <div class="quote">ملحوظة في الملف: التاريخ محتاج نفهم تفاصيله ووجهات النظر المختلفة، مش صورة واحدة بس.</div>
+    </div>
+  </section>
+
+  <section class="section" id="documentary">
+    <div class="container">
+      <div class="section-heading">
+        <div class="eyebrow">ARCHIVE FOOTAGE / 03</div>
+        <h2>شاهد الأدلة بنفسك</h2>
+        <p>اتفرج على الفيديو التعريفي عن حياة جيفارا، وبعده ارجع كمّل التحقيق !!!</p>
+      </div>
+      <div class="video-frame">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/jmeJlvlS5rU"
+          title="Che Guevara biography"
+          loading="lazy"
+          allow="accelerometer; encrypted-media; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+      <p class="video-caption">لو الفيديو مش متاح، ممكن يكون صاحب الفيديو مانع التضمين أو الفيديو اتغيّر على يوتيوب.</p>
+      <button onclick="goTo('investigation')">كمّل التحقيق يا حمودي !!!</button>
+    </div>
+  </section>
+
+  <section class="section" id="investigation">
+    <div class="container">
+      <div class="section-heading">
+        <div class="eyebrow">INTERACTIVE INVESTIGATION / 04</div>
+        <h2>اختبر معلوماتك يا حمودي</h2>
+        <p>جاوب صح علشان تفتح الملف اللي بعده !!!</p>
+      </div>
+
+      <div class="quiz-layout">
+        <aside class="quiz-side">
+          <div class="eyebrow">CASE STATUS</div>
+          <h3>ملف جيفارا</h3>
+          <p class="small">كل إجابة صحيحة هتفتح السؤال اللي بعده.</p>
+          <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+          <p id="progressText" class="small">الملف لم يبدأ بعد</p>
+          <p class="small">SUBJECT: CHE GUEVARA</p>
+        </aside>
+
+        <div class="quiz-main">
+          <div id="questionNumber" class="small">READY FOR INVESTIGATION</div>
+          <h2 id="question">مستعد يا حمودي؟</h2>
+          <div class="answers">
+            <button id="trueBtn" onclick="answer(true)">صح</button>
+            <button id="falseBtn" class="outline" onclick="answer(false)">غلط</button>
+          </div>
+          <p id="result"></p>
+          <button id="nextBtn" class="hidden" onclick="nextQuestion()">التالي !!!</button>
+          <button id="beginQuiz" class="outline" onclick="beginQuiz()">ابدأ الأسئلة</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hidden" id="finalStage">
+    <div class="container" style="text-align:center">
+      <div class="eyebrow">FINAL CLEARANCE / 05</div>
+      <h2 style="font-size:clamp(32px,6vw,58px)">وصلنا لآخر الملف يا حمودي !!!</h2>
+      <p>فاضل اختبار أخير، ركّز بقى ومتفضحناش !!!</p>
+      <h3>دوس على العين الشمال في صورة جيفو !!!</h3>
+      <p class="small">اضغط على منطقة العين نفسها في الصورة.</p>
+
+      <div class="photo-frame">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/58/CheHigh.jpg"
+             alt="صورة تشي جيفارا">
+        <button class="eye-hit eye-left" aria-label="العين الشمال" onclick="leftEye()"></button>
+        <button class="eye-hit eye-right" aria-label="العين اليمين" onclick="rightEye()"></button>
+      </div>
+
+      <p id="eyeResult"></p>
+
+      <div id="finalMessage" class="hidden">
+        <div class="eyebrow">PERSONAL MESSAGE / ONLY FOR YOU</div>
+        <h2 id="animatedTitle"></h2>
+        <p>أتمنى يكون عجبك وانبسطت بيه</p>
+        <p>وأنا آسفة على ردي لما سألتني عملتيه ولا لأ يا نور عيني</p>
+        <p>أنا موجودة علشانك تمام !!!</p>
+        <p>إنت وبس</p>
+        <p>أنا بحبك أوي يا حمودي</p>
+        <p>غالبا دي أول مرة أعمل سايت لحد بس عموما أنا كنت عملت جزء منه وبعدين كملت</p>
+        <p>أتمنى إنه يعجبك يا روح قلبي</p>
+        <h2 style="color:#e66a78">ENJOY YA HAMOODY !!!</h2>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- شاشة الدوامة والأغنية -->
+<section id="songPortal">
+  <div class="eyebrow">ONE LAST SURPRISE / MOHAMED</div>
+  <div class="portal-ring">
+    <div class="portal-picture">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/58/CheHigh.jpg" alt="صورة تشي جيفارا">
+    </div>
+  </div>
+  <h2>استنى يا حمودي...</h2>
+  <p class="portal-note">الملف لسه مخلصش !!!</p>
+  <p id="songStatus">جاري تجهيز المفاجأة...</p>
+  <div id="songPlayer"></div>
+</section>
+
+<footer>
+  <div class="container">M.A. PRIVATE ARCHIVE · MADE WITH CARE</div>
+</footer>
 
 <script>
+function enter() {
+  const password = document.getElementById("password").value.trim().toLowerCase();
+  if (password === "mohamed amer") {
+    document.getElementById("entry").classList.add("hidden");
+    document.getElementById("site").classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    document.getElementById("error").textContent = "الباسورد مش صح !!! جرّب تاني !!!";
+  }
+}
+document.getElementById("password").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") enter();
+});
+
+function goTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+}
+
 const questions = [
- {
-  q:'اللغز الأول: تشي جيفارا كان طبيبًا قبل ما يشتهر كأحد رموز الثورة. صح ولا غلط؟',
-  a:true,
-  ok:'صح يا حمودي !!! درس الطب فعلًا !!!'
- },
- {
-  q:'اللغز التاني: تشي جيفارا اتولد في كوبا. صح ولا غلط؟',
-  a:false,
-  ok:'برافو !!! هو اتولد في الأرجنتين !!!'
- },
- {
-  q:'اللغز التالت: تشي جيفارا شارك في الثورة الكوبية. صح ولا غلط؟',
-  a:true,
-  ok:'مظبوط !!! كان من الشخصيات المعروفة في الثورة الكوبية !!!'
- },
- {
-  q:'اللغز الرابع: تشي جيفارا اتوفى في بوليفيا سنة 1967. صح ولا غلط؟',
-  a:true,
-  ok:'عاش يا حمودي !!! كده خلصت التحقيق بنجاح !!!'
- }
+  { q: "اللغز الأول: تشي جيفارا اتولد في الأرجنتين. صح ولا غلط؟", a: true, ok: "صح يا حمودي !!! البداية كانت في الأرجنتين !!!" },
+  { q: "اللغز التاني: جيفارا درس الطب قبل ما يشتهر بدوره الثوري. صح ولا غلط؟", a: true, ok: "مظبوط !!! درس الطب فعلًا !!!" },
+  { q: "اللغز التالت: جيفارا قابل فيديل كاسترو في المكسيك. صح ولا غلط؟", a: true, ok: "برافو !!! اللقاء كان في المكسيك سنة 1955 !!!" },
+  { q: "اللغز الرابع: جيفارا اتولد في كوبا. صح ولا غلط؟", a: false, ok: "عاش !!! هو اتولد في الأرجنتين مش كوبا !!!" },
+  { q: "اللغز الخامس: جيفارا مات في بوليفيا سنة 1967. صح ولا غلط؟", a: true, ok: "آخر لغز اتحل يا حمودي !!!" }
 ];
 
 let questionIndex = 0;
+let quizStarted = false;
 
-function enter(){
- const password = document.getElementById('password').value.trim().toLowerCase();
-
- if(password === 'mohamed amer'){
-  document.getElementById('entry').classList.add('hidden');
-  document.getElementById('welcome').classList.remove('hidden');
- }else{
-  document.getElementById('error').textContent='الباسورد مش صح !!! جرّب تاني !!!';
-  document.querySelector('#entry').animate(
-   [
-    {transform:'translateX(0)'},
-    {transform:'translateX(-6px)'},
-    {transform:'translateX(6px)'},
-    {transform:'translateX(0)'}
-   ],
-   {duration:250}
-  );
- }
-}
-
-document.getElementById('password').addEventListener('keydown',function(e){
- if(e.key === 'Enter') enter();
-});
-
-function startQuiz(){
- document.getElementById('startBtn').classList.add('hidden');
- document.getElementById('quiz').classList.remove('hidden');
- showQuestion();
-}
-
-function showQuestion(){
- document.getElementById('progress').textContent=
-  'ملف التحقيق '+(questionIndex+1)+' من '+questions.length;
-
- document.getElementById('question').textContent=questions[questionIndex].q;
- document.getElementById('result').textContent='';
- document.getElementById('answerTrue').disabled=false;
- document.getElementById('answerFalse').disabled=false;
- document.getElementById('answerTrue').classList.remove('hidden');
- document.getElementById('answerFalse').classList.remove('hidden');
- document.getElementById('nextBtn').classList.add('hidden');
-}
-
-function answer(choice){
- const current=questions[questionIndex];
-
- if(choice === current.a){
-  document.getElementById('result').textContent=current.ok;
-  document.getElementById('answerTrue').disabled=true;
-  document.getElementById('answerFalse').disabled=true;
-  document.getElementById('nextBtn').classList.remove('hidden');
- }else{
-  document.getElementById('result').textContent=
-   'لأ يا حمودي !!! الإجابة مش دي !!! جرّب تاني !!!';
- }
-}
-
-function nextQuestion(){
- questionIndex++;
-
- if(questionIndex < questions.length){
+function beginQuiz() {
+  if (quizStarted) return;
+  quizStarted = true;
+  document.getElementById("beginQuiz").classList.add("hidden");
   showQuestion();
- }else{
-  document.getElementById('quiz').classList.add('hidden');
-  document.getElementById('ending').classList.remove('hidden');
- }
 }
 
-function leftEye(){
- document.getElementById('eyeResult').textContent=
-  'لا يا عم استغفر الله شمال إيه !!! دوس على العين اليمين';
+function showQuestion() {
+  const q = questions[questionIndex];
+  document.getElementById("questionNumber").textContent =
+    "QUESTION " + (questionIndex + 1) + " / " + questions.length;
+  document.getElementById("question").textContent = q.q;
+  document.getElementById("result").textContent = "";
+  document.getElementById("trueBtn").disabled = false;
+  document.getElementById("falseBtn").disabled = false;
+  document.getElementById("nextBtn").classList.add("hidden");
+  document.getElementById("progressText").textContent =
+    "السؤال " + (questionIndex + 1) + " من " + questions.length;
+  document.getElementById("progressBar").style.width =
+    (questionIndex / questions.length * 100) + "%";
 }
 
-function rightEye(){
- document.getElementById('eyeResult').textContent=
-  'يمين جيفو يا حمودي مش يمينك إنت !!! هنعمل بيك إيه يعني !!!';
-
- document.getElementById('final').classList.remove('hidden');
- revealLetters('طب بجد بقى يا روح قلبي');
+function answer(choice) {
+  if (choice === questions[questionIndex].a) {
+    document.getElementById("result").textContent = questions[questionIndex].ok;
+    document.getElementById("trueBtn").disabled = true;
+    document.getElementById("falseBtn").disabled = true;
+    document.getElementById("nextBtn").classList.remove("hidden");
+    document.getElementById("progressBar").style.width =
+      ((questionIndex + 1) / questions.length * 100) + "%";
+  } else {
+    document.getElementById("result").textContent =
+      "لأ يا حمودي !!! فكّر تاني وجرب !!!";
+  }
 }
 
-function revealLetters(text){
- const title=document.getElementById('animatedTitle');
- title.textContent='';
+function nextQuestion() {
+  questionIndex++;
+  if (questionIndex < questions.length) {
+    showQuestion();
+  } else {
+    document.getElementById("investigation").classList.add("hidden");
+    document.getElementById("finalStage").classList.remove("hidden");
+    goTo("finalStage");
+  }
+}
 
- [...text].forEach(function(character,index){
-  const span=document.createElement('span');
-  span.className='letter';
-  span.style.setProperty('--delay',(index*0.065)+'s');
-  span.textContent=character;
-  title.appendChild(span);
- });
+function leftEye() {
+  document.getElementById("eyeResult").textContent =
+    "لا يا عم استغفر الله شمال إيه !!! دوس على العين اليمين";
+}
+
+let surpriseStarted = false;
+
+function rightEye() {
+  if (surpriseStarted) return;
+  surpriseStarted = true;
+
+  document.getElementById("eyeResult").textContent =
+    "يمين جيفو يا حمودي مش يمينك إنت !!! هنعمل بيك إيه يعني !!!";
+  document.getElementById("finalMessage").classList.remove("hidden");
+
+  revealLetters("طب بجد بقى يا روح قلبي");
+
+  setTimeout(function() {
+    goTo("finalMessage");
+  }, 500);
+
+  // بعد ما تظهر الرسالة، تبدأ الدوامة وتظهر الأغنية
+  setTimeout(function() {
+    const portal = document.getElementById("songPortal");
+    portal.classList.add("active");
+    document.body.style.overflow = "hidden";
+
+    setTimeout(function() {
+      document.getElementById("songStatus").textContent =
+        "أغنية سلمى — الجوكر";
+
+      document.getElementById("songPlayer").innerHTML = `
+        <iframe
+          src="https://www.youtube.com/embed/BEB6RWFnDyI?autoplay=1&playsinline=1"
+          title="الجوكر - سلمى"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>`;
+    }, 2800);
+  }, 6500);
+}
+
+function revealLetters(text) {
+  const title = document.getElementById("animatedTitle");
+  title.textContent = "";
+  [...text].forEach(function(ch, i) {
+    const span = document.createElement("span");
+    span.className = "letter";
+    span.style.setProperty("--delay", (i * 0.065) + "s");
+    span.textContent = ch;
+    title.appendChild(span);
+  });
 }
 </script>
+
 </body>
 </html>
