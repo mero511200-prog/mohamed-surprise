@@ -1,3 +1,4 @@
+ 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -7,90 +8,257 @@
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0;min-height:100vh;display:grid;place-items:center;
-  background:radial-gradient(ellipse at center,#351014 0%,#130709 48%,#050505 100%);
-  color:#f7e9df;font-family:Tahoma,Arial,sans-serif;text-align:center;
-  overflow:hidden
+ margin:0;min-height:100vh;display:grid;place-items:center;
+ padding:20px;
+ background:radial-gradient(ellipse at center,#351014 0%,#130709 48%,#050505 100%);
+ color:#f7e9df;font-family:Tahoma,Arial,sans-serif;text-align:center;
+ overflow-x:hidden
 }
 body:before{
-  content:"";position:fixed;inset:0;pointer-events:none;
-  background:linear-gradient(115deg,transparent 35%,#a51f2b18 50%,transparent 65%);
-  animation:glow 6s infinite alternate
+ content:"";position:fixed;inset:0;pointer-events:none;
+ background:linear-gradient(115deg,transparent 35%,#a51f2b18 50%,transparent 65%);
+ animation:glow 6s infinite alternate
 }
 .card{
-  width:min(90%,430px);padding:38px 25px;border:1px solid #8e343c;
-  background:#0c0809eF;box-shadow:0 0 55px #9d16262b;
-  animation:appear 1.5s ease both
+ position:relative;width:min(100%,460px);padding:30px 24px;
+ border:1px solid #8e343c;background:#0c0809ef;
+ box-shadow:0 0 55px #9d16262b;animation:appear .8s ease both
 }
 .line{width:65px;height:2px;background:#c44b53;margin:0 auto 25px}
 .small{color:#c68b8b;letter-spacing:3px;font-size:11px}
-h1{font-size:clamp(25px,7vw,36px);line-height:1.8;margin:22px 0 8px}
-p{color:#c9b6b6;line-height:2}
+h1{font-size:clamp(25px,7vw,36px);line-height:1.8;margin:20px 0 8px}
+h2{font-size:22px;line-height:1.9}
+p{color:#d4bebe;line-height:2}
 input,button{
-  width:100%;padding:15px;margin-top:12px;font-size:15px;
-  font-family:inherit;text-align:center
+ width:100%;padding:14px;margin-top:12px;font-size:15px;
+ font-family:inherit;text-align:center
 }
 input{background:#171011;border:1px solid #704047;color:white;outline:none}
 input:focus{border-color:#d05a65;box-shadow:0 0 15px #a51f2b55}
 button{
-  background:linear-gradient(100deg,#7f1825,#b32b38);
-  border:0;color:white;cursor:pointer;transition:.3s
+ background:linear-gradient(100deg,#7f1825,#b32b38);
+ border:0;color:white;cursor:pointer;transition:.25s
 }
-button:hover{filter:brightness(1.25);transform:translateY(-2px)}
-#error{color:#ff777e;font-size:13px;min-height:20px}
-.hidden{display:none}
-@keyframes appear{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
-@keyframes glow{from{transform:translateX(-20%)}to{transform:translateX(20%)}}
+button:hover{filter:brightness(1.2);transform:translateY(-2px)}
+button:disabled{opacity:.5;cursor:default}
+.hidden{display:none!important}
+#error{color:#ff777e;min-height:20px}
+#result,#eyeResult{min-height:45px}
+@keyframes appear{
+ from{opacity:0;transform:translateY(20px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@keyframes glow{
+ from{transform:translateX(-15%)}
+ to{transform:translateX(15%)}
+}
+.letter{
+ display:inline-block;opacity:0;
+ animation:rise .5s forwards;
+ animation-delay:var(--delay)
+}
+@keyframes rise{
+ from{opacity:0;transform:translateY(22px)}
+ to{opacity:1;transform:translateY(0)}
+}
+.photo-wrap{
+ position:relative;width:min(100%,330px);margin:20px auto;
+ border:1px solid #8e343c;line-height:0
+}
+.photo-wrap img{display:block;width:100%;height:auto;min-height:180px;object-fit:cover}
+.eye-hit{
+ position:absolute;width:20%;height:12%;padding:0;margin:0;
+ border:2px solid transparent;background:transparent;
+ border-radius:50%;transform:translate(-50%,-50%);
+}
+.eye-hit:hover{border-color:#d05a65;background:#a51f2b33}
+.eye-left{left:38%;top:34%}
+.eye-right{left:62%;top:34%}
+.final-message p{margin:12px 0}
 </style>
 </head>
 <body>
+
 <main class="card" id="entry">
-  <div class="line"></div>
-  <div class="small">A PRIVATE FILE</div>
-  <h1>إنت فاكر إني نسيتك؟</h1>
-  <p>طب اكتب الباسورد.</p>
-  <input id="password" type="password" placeholder="اكتب الباسورد هنا">
-  <button onclick="enter()">فتح الملف</button>
-  <div id="error"></div>
-  <div class="small">CLASSIFIED · 001</div>
+ <div class="line"></div>
+ <div class="small">A PRIVATE FILE</div>
+ <h1>إنت فاكر إني نسيتك؟</h1>
+ <p>طب اكتب الباسورد.</p>
+ <input id="password" type="password" placeholder="اكتب الباسورد هنا" autocomplete="off">
+ <button onclick="enter()">فتح الملف</button>
+ <div id="error"></div>
+ <div class="small">CLASSIFIED · 001</div>
 </main>
+
 <main class="card hidden" id="welcome">
+ <div class="line"></div>
+ <div class="small">ACCESS GRANTED</div>
+ <h1>كنت مستنياك يا محمد</h1>
+ <p>دي مش نهاية الحكاية... دي البداية !!!</p>
+ <button id="startBtn" onclick="startQuiz()">ابدأ التحقيق</button>
+
+ <section id="quiz" class="hidden">
   <div class="line"></div>
-  <div class="small">ACCESS GRANTED</div>
-  <h1>كنت مستنياك يا محمد.</h1>
-  <p>دي مش نهاية الحكاية... دي البداية.</p>
-  <button onclick="clue()">ابدأ التحقيق</button>
-  <p id="next" class="hidden">اللغز الأول: تشي جيفارا كان طبيبًا قبل ما يشتهر كأحد رموز الثورة. صح ولا غلط؟</p>
-  <button id="answer1" class="hidden" onclick="answer(true)">صح</button>
-  <button id="answer2" class="hidden" onclick="answer(false)">غلط</button>
+  <div class="small">CONFIDENTIAL INVESTIGATION</div>
+  <p id="progress"></p>
+  <h2 id="question"></h2>
+  <button id="answerTrue" onclick="answer(true)">صح</button>
+  <button id="answerFalse" onclick="answer(false)">غلط</button>
   <p id="result"></p>
+  <button id="nextBtn" class="hidden" onclick="nextQuestion()">التالي !!!</button>
+ </section>
+
+ <section id="ending" class="hidden">
+  <div class="line"></div>
+  <div class="small">FINAL FILE</div>
+  <h1>وصلنا لآخر الملف يا حمودي !!!</h1>
+  <p>بس لسه فيه اختبار أخير !!!</p>
+  <p>دوس على العين الشمال في صورة جيفو !!!</p>
+
+  <div class="photo-wrap">
+   <img id="chePhoto"
+    src="https://upload.wikimedia.org/wikipedia/commons/5/58/CheHigh.jpg"
+    alt="صورة تشي جيفارا"
+    onerror="this.alt='الصورة لم تتحمل تأكد من اتصال الإنترنت';this.style.minHeight='180px'">
+   <button class="eye-hit eye-left" aria-label="العين الشمال" onclick="leftEye()"></button>
+   <button class="eye-hit eye-right" aria-label="العين اليمين" onclick="rightEye()"></button>
+  </div>
+
+  <p id="eyeResult"></p>
+
+  <section id="final" class="hidden final-message">
+   <div class="line"></div>
+   <h2 id="animatedTitle"></h2>
+   <p>أتمنى يكون عجبك وانبسطت بيه</p>
+   <p>وأنا آسفة على ردي لما سألتني عملتيه ولا لأ يا نور عيني</p>
+   <p>أنا موجودة علشانك تمام !!!</p>
+   <p>إنت وبس</p>
+   <p>أنا بحبك أوي يا حمودي</p>
+   <p>غالبا دي أول مرة أعمل سايت لحد بس عموما أنا كنت عملت جزء منه وبعدين كملت</p>
+   <p>أتمنى إنه يعجبك يا روح قلبي</p>
+   <h2>ENJOY YA HAMOODY !!!</h2>
+  </section>
+ </section>
 </main>
+
 <script>
+const questions = [
+ {
+  q:'اللغز الأول: تشي جيفارا كان طبيبًا قبل ما يشتهر كأحد رموز الثورة. صح ولا غلط؟',
+  a:true,
+  ok:'صح يا حمودي !!! درس الطب فعلًا !!!'
+ },
+ {
+  q:'اللغز التاني: تشي جيفارا اتولد في كوبا. صح ولا غلط؟',
+  a:false,
+  ok:'برافو !!! هو اتولد في الأرجنتين !!!'
+ },
+ {
+  q:'اللغز التالت: تشي جيفارا شارك في الثورة الكوبية. صح ولا غلط؟',
+  a:true,
+  ok:'مظبوط !!! كان من الشخصيات المعروفة في الثورة الكوبية !!!'
+ },
+ {
+  q:'اللغز الرابع: تشي جيفارا اتوفى في بوليفيا سنة 1967. صح ولا غلط؟',
+  a:true,
+  ok:'عاش يا حمودي !!! كده خلصت التحقيق بنجاح !!!'
+ }
+];
+
+let questionIndex = 0;
+
 function enter(){
- const p=document.getElementById('password').value.trim().toLowerCase();
- if(p==='mohamed amer'){
+ const password = document.getElementById('password').value.trim().toLowerCase();
+
+ if(password === 'mohamed amer'){
   document.getElementById('entry').classList.add('hidden');
   document.getElementById('welcome').classList.remove('hidden');
  }else{
-  document.getElementById('error').textContent='الباسورد مش صح... جرّب تاني.';
-  document.querySelector('.card').animate(
-   [{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],
+  document.getElementById('error').textContent='الباسورد مش صح !!! جرّب تاني !!!';
+  document.querySelector('#entry').animate(
+   [
+    {transform:'translateX(0)'},
+    {transform:'translateX(-6px)'},
+    {transform:'translateX(6px)'},
+    {transform:'translateX(0)'}
+   ],
    {duration:250}
   );
  }
 }
-document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')enter()});
-function clue(){
- document.getElementById('next').classList.remove('hidden');
- document.getElementById('answer1').classList.remove('hidden');
- document.getElementById('answer2').classList.remove('hidden');
+
+document.getElementById('password').addEventListener('keydown',function(e){
+ if(e.key === 'Enter') enter();
+});
+
+function startQuiz(){
+ document.getElementById('startBtn').classList.add('hidden');
+ document.getElementById('quiz').classList.remove('hidden');
+ showQuestion();
 }
-function answer(correct){
- document.getElementById('result').textContent=correct?'إجابة صحيحة. استعد للملف التالي.':'مش دي الإجابة. جرّب تاني.';
- if(correct){
-  document.getElementById('answer1').disabled=true;
-  document.getElementById('answer2').disabled=true;
+
+function showQuestion(){
+ document.getElementById('progress').textContent=
+  'ملف التحقيق '+(questionIndex+1)+' من '+questions.length;
+
+ document.getElementById('question').textContent=questions[questionIndex].q;
+ document.getElementById('result').textContent='';
+ document.getElementById('answerTrue').disabled=false;
+ document.getElementById('answerFalse').disabled=false;
+ document.getElementById('answerTrue').classList.remove('hidden');
+ document.getElementById('answerFalse').classList.remove('hidden');
+ document.getElementById('nextBtn').classList.add('hidden');
+}
+
+function answer(choice){
+ const current=questions[questionIndex];
+
+ if(choice === current.a){
+  document.getElementById('result').textContent=current.ok;
+  document.getElementById('answerTrue').disabled=true;
+  document.getElementById('answerFalse').disabled=true;
+  document.getElementById('nextBtn').classList.remove('hidden');
+ }else{
+  document.getElementById('result').textContent=
+   'لأ يا حمودي !!! الإجابة مش دي !!! جرّب تاني !!!';
  }
+}
+
+function nextQuestion(){
+ questionIndex++;
+
+ if(questionIndex < questions.length){
+  showQuestion();
+ }else{
+  document.getElementById('quiz').classList.add('hidden');
+  document.getElementById('ending').classList.remove('hidden');
+ }
+}
+
+function leftEye(){
+ document.getElementById('eyeResult').textContent=
+  'لا يا عم استغفر الله شمال إيه !!! دوس على العين اليمين';
+}
+
+function rightEye(){
+ document.getElementById('eyeResult').textContent=
+  'يمين جيفو يا حمودي مش يمينك إنت !!! هنعمل بيك إيه يعني !!!';
+
+ document.getElementById('final').classList.remove('hidden');
+ revealLetters('طب بجد بقى يا روح قلبي');
+}
+
+function revealLetters(text){
+ const title=document.getElementById('animatedTitle');
+ title.textContent='';
+
+ [...text].forEach(function(character,index){
+  const span=document.createElement('span');
+  span.className='letter';
+  span.style.setProperty('--delay',(index*0.065)+'s');
+  span.textContent=character;
+  title.appendChild(span);
+ });
 }
 </script>
 </body>
