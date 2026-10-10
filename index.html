@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ملف سري</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;display:grid;place-items:center;
+  background:radial-gradient(ellipse at center,#351014 0%,#130709 48%,#050505 100%);
+  color:#f7e9df;font-family:Tahoma,Arial,sans-serif;text-align:center;
+  overflow:hidden
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 35%,#a51f2b18 50%,transparent 65%);
+  animation:glow 6s infinite alternate
+}
+.card{
+  width:min(90%,430px);padding:38px 25px;border:1px solid #8e343c;
+  background:#0c0809eF;box-shadow:0 0 55px #9d16262b;
+  animation:appear 1.5s ease both
+}
+.line{width:65px;height:2px;background:#c44b53;margin:0 auto 25px}
+.small{color:#c68b8b;letter-spacing:3px;font-size:11px}
+h1{font-size:clamp(25px,7vw,36px);line-height:1.8;margin:22px 0 8px}
+p{color:#c9b6b6;line-height:2}
+input,button{
+  width:100%;padding:15px;margin-top:12px;font-size:15px;
+  font-family:inherit;text-align:center
+}
+input{background:#171011;border:1px solid #704047;color:white;outline:none}
+input:focus{border-color:#d05a65;box-shadow:0 0 15px #a51f2b55}
+button{
+  background:linear-gradient(100deg,#7f1825,#b32b38);
+  border:0;color:white;cursor:pointer;transition:.3s
+}
+button:hover{filter:brightness(1.25);transform:translateY(-2px)}
+#error{color:#ff777e;font-size:13px;min-height:20px}
+.hidden{display:none}
+@keyframes appear{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glow{from{transform:translateX(-20%)}to{transform:translateX(20%)}}
+</style>
+</head>
+<body>
+<main class="card" id="entry">
+  <div class="line"></div>
+  <div class="small">A PRIVATE FILE</div>
+  <h1>إنت فاكر إني نسيتك؟</h1>
+  <p>طب اكتب الباسورد.</p>
+  <input id="password" type="password" placeholder="اكتب الباسورد هنا">
+  <button onclick="enter()">فتح الملف</button>
+  <div id="error"></div>
+  <div class="small">CLASSIFIED · 001</div>
+</main>
+<main class="card hidden" id="welcome">
+  <div class="line"></div>
+  <div class="small">ACCESS GRANTED</div>
+  <h1>كنت مستنياك يا محمد.</h1>
+  <p>دي مش نهاية الحكاية... دي البداية.</p>
+  <button onclick="clue()">ابدأ التحقيق</button>
+  <p id="next" class="hidden">اللغز الأول: تشي جيفارا كان طبيبًا قبل ما يشتهر كأحد رموز الثورة. صح ولا غلط؟</p>
+  <button id="answer1" class="hidden" onclick="answer(true)">صح</button>
+  <button id="answer2" class="hidden" onclick="answer(false)">غلط</button>
+  <p id="result"></p>
+</main>
+<script>
+function enter(){
+ const p=document.getElementById('password').value.trim().toLowerCase();
+ if(p==='mohamed amer'){
+  document.getElementById('entry').classList.add('hidden');
+  document.getElementById('welcome').classList.remove('hidden');
+ }else{
+  document.getElementById('error').textContent='الباسورد مش صح... جرّب تاني.';
+  document.querySelector('.card').animate(
+   [{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],
+   {duration:250}
+  );
+ }
+}
+document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')enter()});
+function clue(){
+ document.getElementById('next').classList.remove('hidden');
+ document.getElementById('answer1').classList.remove('hidden');
+ document.getElementById('answer2').classList.remove('hidden');
+}
+function answer(correct){
+ document.getElementById('result').textContent=correct?'إجابة صحيحة. استعد للملف التالي.':'مش دي الإجابة. جرّب تاني.';
+ if(correct){
+  document.getElementById('answer1').disabled=true;
+  document.getElementById('answer2').disabled=true;
+ }
+}
+</script>
+</body>
+</html>
